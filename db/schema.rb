@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170122103554) do
+ActiveRecord::Schema.define(version: 20170122113841) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -44,6 +44,36 @@ ActiveRecord::Schema.define(version: 20170122103554) do
     t.datetime "updated_at",                          null: false
     t.index ["email"], name: "index_admin_users_on_email", unique: true, using: :btree
     t.index ["reset_password_token"], name: "index_admin_users_on_reset_password_token", unique: true, using: :btree
+  end
+
+  create_table "employers", force: :cascade do |t|
+    t.boolean "employerprofile"
+    t.string  "name"
+    t.text    "about"
+    t.text    "vision"
+  end
+
+  create_table "jobcategory", force: :cascade do |t|
+    t.string "name"
+  end
+
+  create_table "jobs", force: :cascade do |t|
+    t.boolean  "exclusive"
+    t.string   "title"
+    t.text     "content"
+    t.string   "location"
+    t.datetime "created_at",     null: false
+    t.datetime "updated_at",     null: false
+    t.integer  "jobcategory_id"
+    t.integer  "jobtype_id"
+    t.integer  "employer_id"
+    t.index ["employer_id"], name: "index_jobs_on_employer_id", using: :btree
+    t.index ["jobcategory_id"], name: "index_jobs_on_jobcategory_id", using: :btree
+    t.index ["jobtype_id"], name: "index_jobs_on_jobtype_id", using: :btree
+  end
+
+  create_table "jobtype", force: :cascade do |t|
+    t.string "name"
   end
 
 end
